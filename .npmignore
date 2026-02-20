@@ -1,0 +1,13 @@
+demo/
+tests/
+Dockerfile
+docker-compose.yml
+.dockerignore
+.git
+.github
+coverage/
+src/
+tsconfig.json
+tsconfig.build.json
+rollup.config.mjs
+jest.config.js

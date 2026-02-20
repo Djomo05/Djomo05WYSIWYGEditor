@@ -1,0 +1,28 @@
+# ================================================================
+#  docker-compose.yml
+#  Spin up the WYSIWYG editor demo with a single command:
+#    docker-compose up --build
+# ================================================================
+version: "3.9"
+
+services:
+  wysiwyg-editor:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: wysiwyg-editor
+    ports:
+      - "3000:3000"               # host:container
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+    volumes:
+      # Mount src for live-reload during development (optional)
+      - ./src:/app/src:ro
+    restart: unless-stopped
+    # Resource limits (adjust to taste)
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 512M

@@ -1,0 +1,48 @@
+{
+  "compilerOptions": {
+    /* ------------------------------------------------------------------ */
+    /*  Target & Module                                                   */
+    /* ------------------------------------------------------------------ */
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+
+    /* ------------------------------------------------------------------ */
+    /*  Output                                                            */
+    /* ------------------------------------------------------------------ */
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "declaration": true,
+    "declarationDir": "./dist/types",
+    "declarationMap": true,
+    "sourceMap": true,
+
+    /* ------------------------------------------------------------------ */
+    /*  Strictness — every flag ON for maximum safety                     */
+    /* ------------------------------------------------------------------ */
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+
+    /* ------------------------------------------------------------------ */
+    /*  Interop                                                           */
+    /* ------------------------------------------------------------------ */
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+
+    /* ------------------------------------------------------------------ */
+    /*  Other                                                             */
+    /* ------------------------------------------------------------------ */
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "isolatedModules": true
+  },
+  "include": ["src/**/*", "tests"],
+  "exclude": ["node_modules", "dist", "demo", "tests"]
+}

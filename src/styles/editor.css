@@ -1,0 +1,1462 @@
+/* ================================================================ */
+/*  WYSIWYG Editor – Complete Stylesheet                             */
+/*  @djomo05/wysiwyg-editor                                         */
+/*                                                                   */
+/*  Design principles:                                               */
+/*    • Every selector is prefixed with `we-` to avoid collisions.   */
+/*    • CSS custom properties (variables) at the top for easy        */
+/*      theming.                                                     */
+/*    • Fullscreen mode uses `position: fixed` so the editor         */
+/*      works inside any layout (flexbox, grid, iframes, etc.)       */
+/*      without breaking.                                            */
+/*    • All colours use `color-scheme: light dark` aware values.     */
+/*    • Image manipulation (resize, crop, move) styles are           */
+/*      integrated at the end of this file.                          */
+/* ================================================================ */
+
+/* ---------------------------------------------------------------- */
+/*  1. Custom Properties (override these for theming)                */
+/* ---------------------------------------------------------------- */
+:root {
+  --we-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  --we-font-size: 15px;
+  --we-line-height: 1.6;
+
+  /* Colours – Light mode */
+  --we-bg: #ffffff;
+  --we-bg-secondary: #f7f8fa;
+  --we-bg-hover: #ebedf0;
+  --we-border: #2e3032;
+  --we-border-focus: #3b82f6;
+  --we-text: #1f2937;
+  --we-text-muted: #6b7280;
+  --we-primary: #3b82f6;
+  --we-primary-hover: #2563eb;
+  --we-primary-text: #ffffff;
+  --we-danger: #ef4444;
+  --we-danger-hover: #dc2626;
+
+  /* Toolbar */
+  --we-toolbar-bg: #f9fafb;
+  --we-toolbar-btn-size: 32px;
+  --we-toolbar-gap: 2px;
+
+  /* Status bar */
+  --we-status-bg: #f9fafb;
+  --we-status-text: #6b7280;
+
+  /* Shadows */
+  --we-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+  --we-shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
+
+  /* Radius */
+  --we-radius: 6px;
+  --we-radius-sm: 4px;
+
+  /* Transitions */
+  --we-transition: 150ms ease;
+}
+
+/* ---------------------------------------------------------------- */
+/*  2. Editor Root                                                   */
+/* ---------------------------------------------------------------- */
+.we-editor {
+  font-family: var(--we-font-family);
+  font-size: var(--we-font-size);
+  line-height: var(--we-line-height);
+  color: var(--we-text);
+  background: var(--we-bg);
+  border: 1px solid var(--we-border);
+  border-radius: var(--we-radius);
+  box-shadow: var(--we-shadow);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ---------------------------------------------------------------- */
+/*  3. Fullscreen Mode                                               */
+/*  Uses position:fixed so it works inside any parent layout.        */
+/* ---------------------------------------------------------------- */
+.we-editor--fullscreen {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+  z-index: 99999 !important;
+  border: none !important;
+}
+
+/* Prevent body scroll when fullscreen */
+body.we-body--editor-fullscreen {
+  overflow: hidden !important;
+}
+
+/* In fullscreen, the body wrapper should fill remaining space */
+.we-editor--fullscreen .we-editor__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.we-editor--fullscreen .we-content,
+.we-editor--fullscreen .we-source-editor,
+.we-editor--fullscreen .we-preview {
+  flex: 1;
+  min-height: 0 !important;
+  height: 100%;
+}
+
+/* ---------------------------------------------------------------- */
+/*  4. Editor Body Wrapper                                           */
+/* ---------------------------------------------------------------- */
+.we-editor__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ---------------------------------------------------------------- */
+/*  5. Toolbar                                                       */
+/* ---------------------------------------------------------------- */
+.we-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--we-toolbar-gap);
+  padding: 6px 8px;
+  background: var(--we-toolbar-bg);
+  border-bottom: 1px solid var(--we-border);
+  user-select: none;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.we-toolbar--hidden {
+  display: none;
+}
+
+/* Dimmed state in preview mode */
+.we-toolbar--preview {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Override: allow the preview and fullscreen buttons even in preview */
+.we-toolbar--preview .we-toolbar__btn[data-action="preview"],
+.we-toolbar--preview .we-toolbar__btn[data-action="fullscreen"] {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Single toolbar button */
+.we-toolbar__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--we-toolbar-btn-size);
+  height: var(--we-toolbar-btn-size);
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: var(--we-radius-sm);
+  background: transparent;
+  color: var(--we-text);
+  cursor: pointer;
+  transition: background var(--we-transition), border-color var(--we-transition),
+    color var(--we-transition);
+  flex-shrink: 0;
+}
+
+.we-toolbar__btn:hover {
+  background: var(--we-bg-hover);
+  border-color: var(--we-border);
+}
+
+.we-toolbar__btn--active,
+.we-toolbar__btn:active {
+  background: var(--we-primary);
+  color: var(--we-primary-text);
+  border-color: var(--we-primary);
+}
+
+.we-toolbar__btn svg {
+  pointer-events: none;
+}
+
+/* Separator */
+.we-toolbar__separator {
+  display: inline-block;
+  width: 1px;
+  height: 20px;
+  background: var(--we-border);
+  margin: 0 4px;
+  flex-shrink: 0;
+}
+
+/* ---- Toolbar dropdown wrappers ---- */
+.we-toolbar__dropdown-wrapper {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* ---- Font Family & Font Size dropdowns ---- */
+.we-toolbar__select {
+  height: var(--we-toolbar-btn-size);
+  padding: 0 8px;
+  border: 1px solid var(--we-border);
+  border-radius: var(--we-radius-sm);
+  background: var(--we-bg);
+  color: var(--we-text);
+  font-family: var(--we-font-family);
+  font-size: 12px;
+  cursor: pointer;
+  outline: none;
+  transition: border-color var(--we-transition), box-shadow var(--we-transition);
+  appearance: auto;
+}
+
+.we-toolbar__select:hover {
+  border-color: var(--we-primary);
+}
+
+.we-toolbar__select:focus {
+  border-color: var(--we-border-focus);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
+}
+
+.we-toolbar__select--font {
+  width: 140px;
+}
+
+.we-toolbar__select--size {
+  width: 80px;
+}
+
+/* ---- Color picker wrapper ---- */
+.we-toolbar__color-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.we-toolbar__btn--color {
+  position: relative;
+}
+
+/* ---- Color palette dropdown ---- */
+.we-color-palette {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 2px;
+  padding: 8px;
+  background: var(--we-bg);
+  border: 1px solid var(--we-border);
+  border-radius: var(--we-radius);
+  box-shadow: var(--we-shadow-lg);
+  z-index: 100;
+  min-width: 200px;
+  animation: we-fadeIn 100ms ease;
+}
+
+.we-color-palette__cell {
+  width: 22px;
+  height: 22px;
+  border: 1px solid var(--we-border);
+  border-radius: 2px;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.we-color-palette__cell:hover {
+  transform: scale(1.25);
+  box-shadow: 0 0 0 2px var(--we-primary);
+  z-index: 1;
+  border-color: var(--we-primary);
+}
+
+/* Custom colour input row */
+.we-color-palette__custom {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px solid var(--we-border);
+}
+
+.we-color-palette__custom-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--we-text-muted);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.we-color-palette__custom-input {
+  width: 32px;
+  height: 24px;
+  padding: 0;
+  border: 1px solid var(--we-border);
+  border-radius: 3px;
+  cursor: pointer;
+  background: transparent;
+}
+
+.we-color-palette__custom-input::-webkit-color-swatch-wrapper {
+  padding: 2px;
+}
+
+.we-color-palette__custom-input::-webkit-color-swatch {
+  border: none;
+  border-radius: 2px;
+}
+
+/* ---------------------------------------------------------------- */
+/*  6. Content Area (contentEditable)                                */
+/* ---------------------------------------------------------------- */
+.we-content {
+  flex: 1;
+  padding: 16px 20px;
+  outline: none;
+  overflow-y: auto;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  background: var(--we-bg);
+  color: var(--we-text);
+  font-family: var(--we-font-family);
+  font-size: var(--we-font-size);
+  line-height: var(--we-line-height);
+  cursor: text;
+  /* Required for absolute-positioned overlays inside */
+  position: relative;
+}
+
+/* Placeholder */
+.we-content--empty::before {
+  content: attr(data-placeholder);
+  color: var(--we-text-muted);
+  pointer-events: none;
+  display: block;
+  opacity: 0.6;
+  font-style: italic;
+}
+
+/* Read-only */
+.we-content--readonly {
+  cursor: default;
+  background: var(--we-bg-secondary);
+}
+
+/* Drag-over visual feedback */
+.we-content--dragover {
+  outline: 3px dashed var(--we-primary);
+  outline-offset: -3px;
+  background: rgba(59, 130, 246, 0.04);
+}
+
+/* ---- Content element styles ---- */
+.we-content h1 { font-size: 2em; margin: 0.5em 0 0.3em; font-weight: 700; }
+.we-content h2 { font-size: 1.5em; margin: 0.5em 0 0.3em; font-weight: 600; }
+.we-content h3 { font-size: 1.25em; margin: 0.5em 0 0.3em; font-weight: 600; }
+.we-content p { margin: 0.5em 0; }
+
+.we-content blockquote {
+  margin: 1em 0;
+  padding: 10px 20px;
+  border-left: 4px solid var(--we-primary);
+  background: var(--we-bg-secondary);
+  color: var(--we-text-muted);
+  font-style: italic;
+}
+
+.we-content pre {
+  margin: 1em 0;
+  padding: 14px 18px;
+  background: #1e293b;
+  color: #e2e8f0;
+  border-radius: var(--we-radius);
+  overflow-x: auto;
+  font-family: "Fira Code", "Cascadia Code", "JetBrains Mono", Consolas,
+    "Courier New", monospace;
+  font-size: 0.9em;
+  line-height: 1.5;
+  tab-size: 2;
+}
+
+.we-content a {
+  color: var(--we-primary);
+  text-decoration: underline;
+}
+
+.we-content hr {
+  border: none;
+  border-top: 2px solid var(--we-border);
+  margin: 1.5em 0;
+}
+
+.we-content ul,
+.we-content ol {
+  padding-left: 1.8em;
+  margin: 0.5em 0;
+}
+
+.we-content li {
+  margin: 0.2em 0;
+}
+
+/* ---------------------------------------------------------------- */
+/*  7. Source Editor (<textarea>)                                    */
+/* ---------------------------------------------------------------- */
+.we-source-editor {
+  flex: 1;
+  width: 100%;
+  padding: 16px 20px;
+  border: none;
+  outline: none;
+  resize: none;
+  background: #1e293b;
+  color: #a5f3fc;
+  font-family: "Fira Code", "Cascadia Code", "JetBrains Mono", Consolas,
+    "Courier New", monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  tab-size: 2;
+  white-space: pre;
+  overflow: auto;
+  box-sizing: border-box;
+}
+
+.we-source-editor:focus {
+  outline: none;
+}
+
+/* ---------------------------------------------------------------- */
+/*  8. Preview Pane                                                  */
+/* ---------------------------------------------------------------- */
+.we-preview {
+  flex: 1;
+  padding: 16px 20px;
+  overflow-y: auto;
+  background: var(--we-bg);
+  color: var(--we-text);
+  font-family: var(--we-font-family);
+  font-size: var(--we-font-size);
+  line-height: var(--we-line-height);
+}
+
+.we-preview h1 { font-size: 2em; margin: 0.5em 0 0.3em; font-weight: 700; }
+.we-preview h2 { font-size: 1.5em; margin: 0.5em 0 0.3em; font-weight: 600; }
+.we-preview h3 { font-size: 1.25em; margin: 0.5em 0 0.3em; font-weight: 600; }
+.we-preview p { margin: 0.5em 0; }
+
+.we-preview blockquote {
+  margin: 1em 0;
+  padding: 10px 20px;
+  border-left: 4px solid var(--we-primary);
+  background: var(--we-bg-secondary);
+  color: var(--we-text-muted);
+  font-style: italic;
+}
+
+.we-preview pre {
+  margin: 1em 0;
+  padding: 14px 18px;
+  background: #1e293b;
+  color: #e2e8f0;
+  border-radius: var(--we-radius);
+  overflow-x: auto;
+  font-family: "Fira Code", "Cascadia Code", monospace;
+  font-size: 0.9em;
+}
+
+.we-preview a { color: var(--we-primary); text-decoration: underline; }
+.we-preview img { max-width: 100%; height: auto; border-radius: var(--we-radius-sm); }
+.we-preview hr { border: none; border-top: 2px solid var(--we-border); margin: 1.5em 0; }
+.we-preview ul, .we-preview ol { padding-left: 1.8em; margin: 0.5em 0; }
+
+/* ---------------------------------------------------------------- */
+/*  9. Status Bar                                                    */
+/* ---------------------------------------------------------------- */
+.we-status-bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 4px 12px;
+  background: var(--we-status-bg);
+  border-top: 1px solid var(--we-border);
+  font-size: 12px;
+  color: var(--we-status-text);
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.we-status-bar__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.we-status-bar__mode {
+  margin-left: auto;
+}
+
+/* ---------------------------------------------------------------- */
+/*  10. Image / Video Figures                                        */
+/* ---------------------------------------------------------------- */
+
+/* Base figure styles — also used by image manipulation */
+.we-image-figure {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+  margin: 1em 0;
+  padding: 0;
+  transition: margin 0.15s ease;
+}
+
+.we-video-figure {
+  margin: 1em 0;
+  padding: 0;
+  max-width: 100%;
+}
+
+.we-image-caption {
+  text-align: center;
+  font-size: 0.85em;
+  color: var(--we-text-muted);
+  margin-top: 6px;
+  font-style: italic;
+}
+
+/* Base image style — cursor:pointer so users know it's interactive */
+.we-image {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--we-radius-sm);
+}
+
+/* Images inside the editor content area are clickable */
+.we-content .we-image {
+  cursor: pointer;
+  transition: outline 0.15s ease, opacity 0.15s ease;
+}
+
+.we-content .we-image:hover {
+  outline: 2px dashed var(--we-border);
+  outline-offset: 2px;
+}
+
+/* ---- Image alignment wrapper (prevents text wrap-around) ---- */
+.we-image-wrapper {
+  display: flex;
+  width: 100%;
+  justify-content: flex-start;
+  margin-bottom: 0.5em;
+  clear: both;
+}
+
+.we-image-wrapper[data-align="left"] {
+  justify-content: flex-start;
+}
+
+.we-image-wrapper[data-align="center"] {
+  justify-content: center;
+}
+
+.we-image-wrapper[data-align="right"] {
+  justify-content: flex-end;
+}
+
+/* Ensure the figure inside the wrapper doesn't have conflicting styles */
+.we-image-wrapper .we-image-figure {
+  float: none !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  display: inline-block;
+  max-width: 100%;
+}
+
+/* Responsive video wrapper (16:9) */
+.we-video-wrapper {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  max-width: 100%;
+}
+
+.we-video-wrapper iframe,
+.we-video-wrapper video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* ---------------------------------------------------------------- */
+/*  11. Tables                                                       */
+/* ---------------------------------------------------------------- */
+.we-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1em 0;
+  font-size: 0.95em;
+}
+
+.we-table__cell {
+  border: 1px solid var(--we-border);
+  padding: 8px 12px;
+  text-align: left;
+  vertical-align: top;
+  min-width: 40px;
+}
+
+.we-table__cell--header {
+  background: var(--we-bg-secondary);
+  font-weight: 600;
+  border: 1px solid var(--we-border);
+  padding: 8px 12px;
+}
+
+.we-table-preview-table {
+  border-collapse: collapse;
+  margin: 12px 0;
+}
+
+.we-table-preview-cell {
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--we-border);
+  background: var(--we-bg-secondary);
+}
+
+/* ================================================================ */
+/*  TABLE — Context Menu & Cell Selection                            */
+/* ================================================================ */
+
+/* ---- Selected cell highlight ---- */
+.we-table__cell--selected {
+  outline: 2px solid var(--we-primary) !important;
+  outline-offset: -2px;
+  background-color: rgba(59, 130, 246, 0.06) !important;
+}
+
+/* ---- Context menu ---- */
+.we-table-context-menu {
+  position: fixed;
+  z-index: 100010;
+  min-width: 200px;
+  max-width: 280px;
+  background: var(--we-bg);
+  border: 1px solid var(--we-border);
+  border-radius: var(--we-radius);
+  box-shadow: var(--we-shadow-lg);
+  padding: 4px 0;
+  animation: we-fadeIn 100ms ease;
+  font-family: var(--we-font-family);
+  font-size: 13px;
+}
+
+.we-table-context-menu__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 7px 14px;
+  border: none;
+  background: transparent;
+  color: var(--we-text);
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  text-align: left;
+  transition: background var(--we-transition), color var(--we-transition);
+}
+
+.we-table-context-menu__item:hover {
+  background: var(--we-bg-hover);
+}
+
+.we-table-context-menu__item--danger {
+  color: var(--we-danger);
+}
+
+.we-table-context-menu__item--danger:hover {
+  background: var(--we-danger);
+  color: #ffffff;
+}
+
+.we-table-context-menu__item--disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.we-table-context-menu__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  font-size: 14px;
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+.we-table-context-menu__divider {
+  height: 1px;
+  background: var(--we-border);
+  margin: 4px 8px;
+}
+
+/* ---- Editable cells cursor ---- */
+.we-table__cell[contenteditable="true"] {
+  cursor: text;
+  outline: none;
+}
+
+.we-table__cell[contenteditable="true"]:focus {
+  outline: 2px solid var(--we-border-focus);
+  outline-offset: -2px;
+}
+
+/* ---- Table hover highlight ---- */
+.we-content table.we-table tr:hover td {
+  background-color: rgba(59, 130, 246, 0.03);
+}
+
+/* ---- Fullscreen z-index fix ---- */
+.we-editor--fullscreen .we-table-context-menu {
+  z-index: 100010;
+}
+
+/* ---- Responsive table ---- */
+@media (max-width: 600px) {
+  .we-table-context-menu {
+    min-width: 180px;
+    font-size: 12px;
+  }
+
+  .we-table-context-menu__item {
+    padding: 6px 10px;
+  }
+}
+
+/* ---------------------------------------------------------------- */
+/*  12. Modal Overlay & Dialog                                       */
+/* ---------------------------------------------------------------- */
+.we-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100000;
+  padding: 20px;
+  animation: we-fadeIn 150ms ease;
+}
+
+.we-modal {
+  background: var(--we-bg);
+  border-radius: var(--we-radius);
+  box-shadow: var(--we-shadow-lg);
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: we-slideUp 200ms ease;
+}
+
+@keyframes we-fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes we-slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.we-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--we-border);
+}
+
+.we-modal__title {
+  margin: 0;
+  font-size: 1.1em;
+  font-weight: 600;
+}
+
+.we-modal__close {
+  background: transparent;
+  border: none;
+  font-size: 1.5em;
+  cursor: pointer;
+  color: var(--we-text-muted);
+  line-height: 1;
+  padding: 0;
+  transition: color var(--we-transition);
+}
+
+.we-modal__close:hover {
+  color: var(--we-text);
+}
+
+.we-modal__body {
+  padding: 16px 20px;
+}
+
+.we-modal__label {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 0.9em;
+  font-weight: 500;
+  color: var(--we-text);
+}
+
+.we-modal__label--checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.we-modal__input {
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  margin-top: 4px;
+  border: 1px solid var(--we-border);
+  border-radius: var(--we-radius-sm);
+  font-size: 0.95em;
+  font-family: inherit;
+  color: var(--we-text);
+  background: var(--we-bg);
+  transition: border-color var(--we-transition), box-shadow var(--we-transition);
+  box-sizing: border-box;
+}
+
+.we-modal__input:focus {
+  outline: none;
+  border-color: var(--we-border-focus);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.we-modal__input--error {
+  border-color: var(--we-danger) !important;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
+}
+
+.we-modal__hint {
+  font-size: 0.8em;
+  color: var(--we-text-muted);
+  margin: -4px 0 12px;
+}
+
+.we-modal__preview {
+  margin-top: 12px;
+  padding: 8px;
+  border: 1px dashed var(--we-border);
+  border-radius: var(--we-radius-sm);
+  min-height: 40px;
+  background: var(--we-bg-secondary);
+}
+
+.we-modal__tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--we-border);
+}
+
+.we-modal__tab {
+  padding: 8px 16px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.9em;
+  font-family: inherit;
+  color: var(--we-text-muted);
+  border-bottom: 2px solid transparent;
+  transition: color var(--we-transition), border-color var(--we-transition);
+}
+
+.we-modal__tab:hover {
+  color: var(--we-text);
+}
+
+.we-modal__tab--active {
+  color: var(--we-primary);
+  border-bottom-color: var(--we-primary);
+  font-weight: 500;
+}
+
+.we-modal__tab-content--hidden {
+  display: none;
+}
+
+.we-modal__footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 12px 20px;
+  border-top: 1px solid var(--we-border);
+}
+
+.we-modal__btn {
+  padding: 8px 18px;
+  border: 1px solid var(--we-border);
+  border-radius: var(--we-radius-sm);
+  font-size: 0.9em;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background var(--we-transition), border-color var(--we-transition),
+    color var(--we-transition);
+  background: var(--we-bg);
+  color: var(--we-text);
+}
+
+.we-modal__btn:hover {
+  background: var(--we-bg-hover);
+}
+
+.we-modal__btn--primary {
+  background: var(--we-primary);
+  color: var(--we-primary-text);
+  border-color: var(--we-primary);
+}
+
+.we-modal__btn--primary:hover {
+  background: var(--we-primary-hover);
+  border-color: var(--we-primary-hover);
+}
+
+.we-modal__btn--secondary {
+  background: var(--we-bg-secondary);
+  border-color: var(--we-border);
+}
+
+.we-modal__btn--secondary:hover {
+  background: var(--we-bg-hover);
+}
+
+.we-modal__btn--danger {
+  background: var(--we-danger);
+  color: #fff;
+  border-color: var(--we-danger);
+  margin-right: auto;
+}
+
+.we-modal__btn--danger:hover {
+  background: var(--we-danger-hover);
+  border-color: var(--we-danger-hover);
+}
+
+.we-modal__btn--cancel {
+  background: transparent;
+  border-color: var(--we-border);
+}
+
+/* ---------------------------------------------------------------- */
+/*  13. Code blocks inside the content                               */
+/* ---------------------------------------------------------------- */
+.we-code-block {
+  margin: 1em 0;
+  padding: 14px 18px;
+  background: #1e293b;
+  color: #e2e8f0;
+  border-radius: var(--we-radius);
+  overflow-x: auto;
+  font-family: "Fira Code", "Cascadia Code", monospace;
+  font-size: 0.9em;
+  line-height: 1.5;
+}
+
+/* ================================================================ */
+/*                                                                   */
+/*  14. IMAGE MANIPULATION — Resize, Crop, Move                      */
+/*                                                                   */
+/* ================================================================ */
+
+/* ---- Selected image ---- */
+.we-image--selected {
+  outline: 2px solid var(--we-primary);
+  outline-offset: 2px;
+  cursor: pointer;
+}
+
+.we-image--dragging {
+  opacity: 0.7;
+  cursor: grabbing !important;
+}
+
+/* ---- Resize overlay (positioned over the selected image) ---- */
+.we-image-overlay {
+  position: absolute;
+  pointer-events: none;
+  border: 2px solid var(--we-primary);
+  z-index: 50;
+  box-sizing: border-box;
+  background: transparent;
+}
+
+/* ---- Resize handles (8 total: 4 corners + 4 edges) ---- */
+.we-resize-handle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: var(--we-primary);
+  border: 2px solid #ffffff;
+  border-radius: 2px;
+  pointer-events: all;
+  z-index: 51;
+  box-sizing: border-box;
+}
+
+/* Corner handles */
+.we-resize-handle--nw { top: -5px; left: -5px; cursor: nw-resize; }
+.we-resize-handle--ne { top: -5px; right: -5px; cursor: ne-resize; }
+.we-resize-handle--sw { bottom: -5px; left: -5px; cursor: sw-resize; }
+.we-resize-handle--se { bottom: -5px; right: -5px; cursor: se-resize; }
+
+/* Edge handles */
+.we-resize-handle--n {
+  top: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: n-resize;
+}
+
+.we-resize-handle--s {
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: s-resize;
+}
+
+.we-resize-handle--w {
+  top: 50%;
+  left: -5px;
+  transform: translateY(-50%);
+  cursor: w-resize;
+}
+
+.we-resize-handle--e {
+  top: 50%;
+  right: -5px;
+  transform: translateY(-50%);
+  cursor: e-resize;
+}
+
+/* Hover state — enlarge handles slightly */
+.we-resize-handle:hover {
+  background: var(--we-primary-hover);
+  transform-origin: center;
+}
+
+.we-resize-handle--n:hover,
+.we-resize-handle--s:hover {
+  transform: translateX(-50%) scale(1.2);
+}
+
+.we-resize-handle--w:hover,
+.we-resize-handle--e:hover {
+  transform: translateY(-50%) scale(1.2);
+}
+
+.we-resize-handle--nw:hover,
+.we-resize-handle--ne:hover,
+.we-resize-handle--sw:hover,
+.we-resize-handle--se:hover {
+  transform: scale(1.2);
+}
+
+/* ---- Dimensions label (shows WxH below the image) ---- */
+.we-image-dimensions {
+  position: absolute;
+  bottom: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--we-primary);
+  color: var(--we-primary-text);
+  font-size: 11px;
+  font-family: var(--we-font-family);
+  padding: 2px 8px;
+  border-radius: 3px;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 52;
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+/* ---------------------------------------------------------------- */
+/*  15. Floating Image Toolbar                                       */
+/* ---------------------------------------------------------------- */
+.we-image-toolbar {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 4px 6px;
+  background: var(--we-bg);
+  border: 1px solid var(--we-border);
+  border-radius: var(--we-radius);
+  box-shadow: var(--we-shadow-lg);
+  z-index: 55;
+  white-space: nowrap;
+  user-select: none;
+  animation: we-slideUp 150ms ease;
+}
+
+.we-image-toolbar__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: var(--we-radius-sm);
+  background: transparent;
+  color: var(--we-text);
+  cursor: pointer;
+  transition: background var(--we-transition),
+              border-color var(--we-transition),
+              color var(--we-transition);
+}
+
+.we-image-toolbar__btn:hover {
+  background: var(--we-bg-hover);
+  border-color: var(--we-border);
+}
+
+.we-image-toolbar__btn:active {
+  background: var(--we-primary);
+  color: var(--we-primary-text);
+}
+
+.we-image-toolbar__btn--danger {
+  color: var(--we-danger);
+}
+
+.we-image-toolbar__btn--danger:hover {
+  background: var(--we-danger);
+  color: #ffffff;
+  border-color: var(--we-danger);
+}
+
+.we-image-toolbar__btn svg {
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+.we-image-toolbar__sep {
+  display: inline-block;
+  width: 1px;
+  height: 18px;
+  background: var(--we-border);
+  margin: 0 4px;
+  flex-shrink: 0;
+}
+
+/* ---------------------------------------------------------------- */
+/*  16. Crop Overlay                                                 */
+/* ---------------------------------------------------------------- */
+.we-crop-overlay {
+  position: absolute;
+  z-index: 60;
+  overflow: visible;
+  pointer-events: all;
+  box-sizing: border-box;
+}
+
+/* Dark mask covering the image outside the crop region */
+.we-crop-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.55);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* The bright crop region the user can drag and resize */
+.we-crop-region {
+  position: absolute;
+  border: 2px solid #ffffff;
+  background: transparent;
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.55);
+  cursor: move;
+  z-index: 2;
+  box-sizing: border-box;
+}
+
+/* Rule-of-thirds grid lines */
+.we-crop-grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.we-crop-grid__line {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.we-crop-grid__line--h1 { top: 33.33%; left: 0; right: 0; height: 1px; }
+.we-crop-grid__line--h2 { top: 66.66%; left: 0; right: 0; height: 1px; }
+.we-crop-grid__line--v1 { left: 33.33%; top: 0; bottom: 0; width: 1px; }
+.we-crop-grid__line--v2 { left: 66.66%; top: 0; bottom: 0; width: 1px; }
+
+/* Crop corner handles */
+.we-crop-handle {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background: #ffffff;
+  border: 2px solid var(--we-primary);
+  border-radius: 2px;
+  z-index: 4;
+  box-sizing: border-box;
+}
+
+.we-crop-handle--nw { top: -7px; left: -7px; cursor: nw-resize; }
+.we-crop-handle--ne { top: -7px; right: -7px; cursor: ne-resize; }
+.we-crop-handle--sw { bottom: -7px; left: -7px; cursor: sw-resize; }
+.we-crop-handle--se { bottom: -7px; right: -7px; cursor: se-resize; }
+
+.we-crop-handle:hover {
+  background: var(--we-primary);
+  border-color: #ffffff;
+}
+
+/* Crop action buttons (Apply / Cancel) */
+.we-crop-actions {
+  position: absolute;
+  bottom: -44px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+  z-index: 5;
+  white-space: nowrap;
+}
+
+.we-crop-btn {
+  padding: 6px 14px;
+  border: 1px solid var(--we-border);
+  border-radius: var(--we-radius-sm);
+  font-size: 13px;
+  font-family: var(--we-font-family);
+  cursor: pointer;
+  font-weight: 500;
+  transition: background var(--we-transition),
+              border-color var(--we-transition),
+              color var(--we-transition);
+  box-shadow: var(--we-shadow);
+}
+
+.we-crop-btn--apply {
+  background: var(--we-primary);
+  color: var(--we-primary-text);
+  border-color: var(--we-primary);
+}
+
+.we-crop-btn--apply:hover {
+  background: var(--we-primary-hover);
+  border-color: var(--we-primary-hover);
+}
+
+.we-crop-btn--cancel {
+  background: var(--we-bg);
+  color: var(--we-text);
+  border-color: var(--we-border);
+}
+
+.we-crop-btn--cancel:hover {
+  background: var(--we-bg-hover);
+}
+
+/* ---------------------------------------------------------------- */
+/*  17. Fullscreen — overlay z-index overrides                       */
+/* ---------------------------------------------------------------- */
+.we-editor--fullscreen .we-image-overlay,
+.we-editor--fullscreen .we-image-toolbar,
+.we-editor--fullscreen .we-crop-overlay {
+  z-index: 100001;
+}
+
+.we-editor--fullscreen .we-modal-overlay {
+  z-index: 100002;
+}
+
+/* ---------------------------------------------------------------- */
+/*  18. Print styles                                                 */
+/* ---------------------------------------------------------------- */
+@media print {
+  .we-toolbar,
+  .we-status-bar,
+  .we-image-overlay,
+  .we-image-toolbar,
+  .we-crop-overlay {
+    display: none !important;
+  }
+
+  .we-editor {
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  .we-content {
+    padding: 0 !important;
+  }
+
+  .we-image--selected {
+    outline: none !important;
+  }
+}
+
+/* ---------------------------------------------------------------- */
+/*  19. Responsive adjustments                                       */
+/* ---------------------------------------------------------------- */
+@media (max-width: 600px) {
+  /* Toolbar */
+  .we-toolbar {
+    padding: 4px 6px;
+  }
+
+  .we-toolbar__btn {
+    width: 28px;
+    height: 28px;
+  }
+
+  .we-toolbar__btn svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  /* Content areas */
+  .we-content,
+  .we-source-editor,
+  .we-preview {
+    padding: 12px 14px;
+  }
+
+  /* Modal */
+  .we-modal {
+    max-width: 100%;
+    margin: 10px;
+  }
+
+  /* Resize handles — bigger touch targets on mobile */
+  .we-resize-handle {
+    width: 14px;
+    height: 14px;
+  }
+
+  .we-resize-handle--nw { top: -7px; left: -7px; }
+  .we-resize-handle--ne { top: -7px; right: -7px; }
+  .we-resize-handle--sw { bottom: -7px; left: -7px; }
+  .we-resize-handle--se { bottom: -7px; right: -7px; }
+
+  /* Image toolbar */
+  .we-image-toolbar {
+    padding: 3px 4px;
+    gap: 1px;
+  }
+
+  .we-image-toolbar__btn {
+    width: 24px;
+    height: 24px;
+  }
+
+  .we-image-toolbar__btn svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  /* Crop handles — bigger touch targets on mobile */
+  .we-crop-handle {
+    width: 18px;
+    height: 18px;
+  }
+
+  .we-crop-handle--nw { top: -9px; left: -9px; }
+  .we-crop-handle--ne { top: -9px; right: -9px; }
+  .we-crop-handle--sw { bottom: -9px; left: -9px; }
+  .we-crop-handle--se { bottom: -9px; right: -9px; }
+
+  .we-crop-btn {
+    padding: 4px 10px;
+    font-size: 12px;
+  }
+
+  .we-image-dimensions {
+    font-size: 10px;
+    padding: 1px 6px;
+  }
+
+    /* Dropdowns on mobile */
+  .we-toolbar__select--font {
+    width: 100px;
+    font-size: 11px;
+  }
+
+  .we-toolbar__select--size {
+    width: 60px;
+    font-size: 11px;
+  }
+
+  .we-color-palette {
+    min-width: 180px;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 1px;
+    padding: 6px;
+  }
+
+  .we-color-palette__cell {
+    width: 18px;
+    height: 18px;
+  }
+}

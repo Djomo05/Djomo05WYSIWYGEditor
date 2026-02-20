@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WYSIWYG Editor – Demo</title>
+
+  <!-- Editor styles -->
+  <link rel="stylesheet" href="/dist/styles/editor.css" />
+
+  <style>
+    /* Demo page layout */
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      margin: 0;
+      padding: 40px 20px;
+      background: #f0f2f5;
+      color: #1f2937;
+    }
+
+    .demo-container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 1.8em;
+      margin-bottom: 4px;
+    }
+
+    .subtitle {
+      color: #6b7280;
+      margin-bottom: 32px;
+    }
+
+    .output-section {
+      margin-top: 32px;
+    }
+
+    .output-section h2 {
+      font-size: 1.2em;
+      margin-bottom: 8px;
+    }
+
+    #html-output {
+      width: 100%;
+      height: 200px;
+      padding: 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-family: "Fira Code", monospace;
+      font-size: 13px;
+      background: #1e293b;
+      color: #a5f3fc;
+      resize: vertical;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    .demo-btn {
+      padding: 8px 16px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      background: #fff;
+      cursor: pointer;
+      font-size: 0.9em;
+      transition: background 0.15s;
+    }
+
+    .demo-btn:hover {
+      background: #ebedf0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="demo-container">
+    <h1>📝 WYSIWYG Editor</h1>
+    <p class="subtitle">
+      A fully-featured, modular WYSIWYG editor built with TypeScript. Try it out below.
+    </p>
+
+    <!-- Editor mount point -->
+    <div id="editor"></div>
+
+    <!-- Control buttons -->
+    <div class="btn-row">
+      <button class="demo-btn" onclick="showHTML()">Get HTML</button>
+      <button class="demo-btn" onclick="showText()">Get Text</button>
+      <button class="demo-btn" onclick="clearEditor()">Clear</button>
+      <button class="demo-btn" onclick="setContent()">Set Content</button>
+      <button class="demo-btn" onclick="destroyEditor()">Destroy</button>
+      <button class="demo-btn" onclick="recreateEditor()">Recreate</button>
+    </div>
+
+    <!-- HTML output -->
+    <div class="output-section">
+      <h2>Output</h2>
+      <textarea id="html-output" readonly placeholder="Click 'Get HTML' to see the editor content here…"></textarea>
+    </div>
+  </div>
+
+  <!-- Load the UMD bundle -->
+  <script src="/dist/umd/wysiwyg-editor.min.js"></script>
+
+  <script>
+    /**
+     * Demo script
+     * --------------------------------------------------------
+     * Uses the UMD bundle exposed as `window.WysiwygEditor`.
+     */
+
+    let editor;
+
+    function initEditor() {
+      editor = WysiwygEditor.createEditor({
+        container: '#editor',
+        height: '400px',
+        placeholder: 'Start typing your content here…',
+        content: [
+          '<h2>Welcome to the WYSIWYG Editor! 🎉</h2>',
+          '<p>This is a <strong>fully-featured</strong> rich-text editor built with <em>TypeScript</em>.</p>',
+          '<h3>Features</h3>',
+          '<ul>',
+          '  <li><strong>Rich text formatting</strong> — bold, italic, underline, strikethrough</li>',
+          '  <li><strong>Headings</strong> — H1 through H3 and paragraph</li>',
+          '  <li><strong>Lists</strong> — ordered and unordered</li>',
+          '  <li><strong>Alignment</strong> — left, center, right, justify</li>',
+          '  <li><strong>Links</strong> — with new-tab option and unlinking</li>',
+          '  <li><strong>Images</strong> — URL, file upload, drag &amp; drop, clipboard paste</li>',
+          '  <li><strong>Videos</strong> — YouTube, Vimeo, Dailymotion, direct files</li>',
+          '  <li><strong>Tables</strong> — configurable rows/columns with header</li>',
+          '  <li><strong>Source editing</strong> — view and edit raw HTML</li>',
+          '  <li><strong>Preview mode</strong> — see the final output</li>',
+          '  <li><strong>Fullscreen</strong> — expand without breaking the layout</li>',
+          '  <li><strong>Keyboard shortcuts</strong> — Ctrl+B, Ctrl+I, Ctrl+U, etc.</li>',
+          '</ul>',
+          '<blockquote>Try editing this content, inserting images, videos, and tables!</blockquote>',
+        ].join('\n'),
+      });
+
+      // Listen for changes
+      editor.on('change', function () {
+        console.log('[Demo] Content changed');
+      });
+
+      editor.on('modeChange', function (data) {
+        console.log('[Demo] Mode changed:', data);
+      });
+
+      editor.on('fullscreenChange', function (data) {
+        console.log('[Demo] Fullscreen changed:', data);
+      });
+    }
+
+    function showHTML() {
+      document.getElementById('html-output').value = editor.getContent();
+    }
+
+    function showText() {
+      document.getElementById('html-output').value = editor.getTextContent();
+    }
+
+    function clearEditor() {
+      editor.clear();
+    }
+
+    function setContent() {
+      editor.setContent('<h2>Content was set programmatically!</h2><p>This replaces everything.</p>');
+    }
+
+    function destroyEditor() {
+      editor.destroy();
+      console.log('[Demo] Editor destroyed');
+    }
+
+    function recreateEditor() {
+      initEditor();
+      console.log('[Demo] Editor recreated');
+    }
+
+    // Boot
+    initEditor();
+  </script>
+
+</body>
+</html>

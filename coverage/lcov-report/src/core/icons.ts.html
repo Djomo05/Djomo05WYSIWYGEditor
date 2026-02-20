@@ -1,0 +1,238 @@
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Code coverage report for src/core/icons.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../../favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+    
+<body>
+<div class='wrapper'>
+    <div class='pad1'>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/core</a> icons.ts</h1>
+        <div class='clearfix'>
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">100% </span>
+                <span class="quiet">Statements</span>
+                <span class='fraction'>2/2</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">100% </span>
+                <span class="quiet">Branches</span>
+                <span class='fraction'>0/0</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">100% </span>
+                <span class="quiet">Functions</span>
+                <span class='fraction'>1/1</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">100% </span>
+                <span class="quiet">Lines</span>
+                <span class='fraction'>2/2</span>
+            </div>
+        
+            
+        </div>
+        <p class="quiet">
+            Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
+        </p>
+        <template id="filterTemplate">
+            <div class="quiet">
+                Filter:
+                <input type="search" id="fileSearch">
+            </div>
+        </template>
+    </div>
+    <div class='status-line high'></div>
+    <pre><table class="coverage">
+<tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
+<a name='L2'></a><a href='#L2'>2</a>
+<a name='L3'></a><a href='#L3'>3</a>
+<a name='L4'></a><a href='#L4'>4</a>
+<a name='L5'></a><a href='#L5'>5</a>
+<a name='L6'></a><a href='#L6'>6</a>
+<a name='L7'></a><a href='#L7'>7</a>
+<a name='L8'></a><a href='#L8'>8</a>
+<a name='L9'></a><a href='#L9'>9</a>
+<a name='L10'></a><a href='#L10'>10</a>
+<a name='L11'></a><a href='#L11'>11</a>
+<a name='L12'></a><a href='#L12'>12</a>
+<a name='L13'></a><a href='#L13'>13</a>
+<a name='L14'></a><a href='#L14'>14</a>
+<a name='L15'></a><a href='#L15'>15</a>
+<a name='L16'></a><a href='#L16'>16</a>
+<a name='L17'></a><a href='#L17'>17</a>
+<a name='L18'></a><a href='#L18'>18</a>
+<a name='L19'></a><a href='#L19'>19</a>
+<a name='L20'></a><a href='#L20'>20</a>
+<a name='L21'></a><a href='#L21'>21</a>
+<a name='L22'></a><a href='#L22'>22</a>
+<a name='L23'></a><a href='#L23'>23</a>
+<a name='L24'></a><a href='#L24'>24</a>
+<a name='L25'></a><a href='#L25'>25</a>
+<a name='L26'></a><a href='#L26'>26</a>
+<a name='L27'></a><a href='#L27'>27</a>
+<a name='L28'></a><a href='#L28'>28</a>
+<a name='L29'></a><a href='#L29'>29</a>
+<a name='L30'></a><a href='#L30'>30</a>
+<a name='L31'></a><a href='#L31'>31</a>
+<a name='L32'></a><a href='#L32'>32</a>
+<a name='L33'></a><a href='#L33'>33</a>
+<a name='L34'></a><a href='#L34'>34</a>
+<a name='L35'></a><a href='#L35'>35</a>
+<a name='L36'></a><a href='#L36'>36</a>
+<a name='L37'></a><a href='#L37'>37</a>
+<a name='L38'></a><a href='#L38'>38</a>
+<a name='L39'></a><a href='#L39'>39</a>
+<a name='L40'></a><a href='#L40'>40</a>
+<a name='L41'></a><a href='#L41'>41</a>
+<a name='L42'></a><a href='#L42'>42</a>
+<a name='L43'></a><a href='#L43'>43</a>
+<a name='L44'></a><a href='#L44'>44</a>
+<a name='L45'></a><a href='#L45'>45</a>
+<a name='L46'></a><a href='#L46'>46</a>
+<a name='L47'></a><a href='#L47'>47</a>
+<a name='L48'></a><a href='#L48'>48</a>
+<a name='L49'></a><a href='#L49'>49</a>
+<a name='L50'></a><a href='#L50'>50</a>
+<a name='L51'></a><a href='#L51'>51</a>
+<a name='L52'></a><a href='#L52'>52</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">36x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
+ * @module core/icons
+ * ------------------------------------------------------------------
+ *  Inline SVG icons for every toolbar button.
+ *  Each icon is a 24×24 viewBox SVG fragment (no &lt;svg&gt; wrapper needed
+ *  because the toolbar wraps them).  All icons use `currentColor` so
+ *  they inherit the button's text colour.
+ * ------------------------------------------------------------------
+ */
+&nbsp;
+function svg(paths: string): string {
+  return `&lt;svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"&gt;${paths}&lt;/svg&gt;`;
+}
+&nbsp;
+export const ICONS: Record&lt;string, string&gt; = {
+  bold: svg('&lt;path d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/&gt;&lt;path d="M6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/&gt;'),
+  italic: svg('&lt;line x1="19" y1="4" x2="10" y2="4"/&gt;&lt;line x1="14" y1="20" x2="5" y2="20"/&gt;&lt;line x1="15" y1="4" x2="9" y2="20"/&gt;'),
+  underline: svg('&lt;path d="M6 3v7a6 6 0 0 0 6 6 6 6 0 0 0 6-6V3"/&gt;&lt;line x1="4" y1="21" x2="20" y2="21"/&gt;'),
+  strikethrough: svg('&lt;line x1="5" y1="12" x2="19" y2="12"/&gt;&lt;path d="M16 6C16 6 14.5 4 12 4 9 4 7.5 6 7.5 8c0 3 8.5 3 8.5 7 0 2-1.5 4-4 4-2.5 0-4-2-4-2"/&gt;'),
+  heading1: svg('&lt;path d="M4 12h8"/&gt;&lt;path d="M4 18V6"/&gt;&lt;path d="M12 18V6"/&gt;&lt;path d="M17 12l3-2v10"/&gt;'),
+  heading2: svg('&lt;path d="M4 12h8"/&gt;&lt;path d="M4 18V6"/&gt;&lt;path d="M12 18V6"/&gt;&lt;path d="M21 18h-4c0-4 4-3 4-6 0-1.5-2-2.5-4-1"/&gt;'),
+  heading3: svg('&lt;path d="M4 12h8"/&gt;&lt;path d="M4 18V6"/&gt;&lt;path d="M12 18V6"/&gt;&lt;path d="M17.5 10.5c1.7-1 3.5 0 3.5 1.5a2 2 0 0 1-2 2 2 2 0 0 1 2 2c0 1.5-1.8 2.5-3.5 1.5"/&gt;'),
+  paragraph: svg('&lt;path d="M13 4v16"/&gt;&lt;path d="M17 4v16"/&gt;&lt;path d="M13 4H9a4 4 0 0 0 0 8h4"/&gt;'),
+  alignLeft: svg('&lt;line x1="17" y1="10" x2="3" y2="10"/&gt;&lt;line x1="21" y1="6" x2="3" y2="6"/&gt;&lt;line x1="21" y1="14" x2="3" y2="14"/&gt;&lt;line x1="17" y1="18" x2="3" y2="18"/&gt;'),
+  alignCenter: svg('&lt;line x1="18" y1="10" x2="6" y2="10"/&gt;&lt;line x1="21" y1="6" x2="3" y2="6"/&gt;&lt;line x1="21" y1="14" x2="3" y2="14"/&gt;&lt;line x1="18" y1="18" x2="6" y2="18"/&gt;'),
+  alignRight: svg('&lt;line x1="21" y1="10" x2="7" y2="10"/&gt;&lt;line x1="21" y1="6" x2="3" y2="6"/&gt;&lt;line x1="21" y1="14" x2="3" y2="14"/&gt;&lt;line x1="21" y1="18" x2="7" y2="18"/&gt;'),
+  alignJustify: svg('&lt;line x1="21" y1="10" x2="3" y2="10"/&gt;&lt;line x1="21" y1="6" x2="3" y2="6"/&gt;&lt;line x1="21" y1="14" x2="3" y2="14"/&gt;&lt;line x1="21" y1="18" x2="3" y2="18"/&gt;'),
+  orderedList: svg('&lt;line x1="10" y1="6" x2="21" y2="6"/&gt;&lt;line x1="10" y1="12" x2="21" y2="12"/&gt;&lt;line x1="10" y1="18" x2="21" y2="18"/&gt;&lt;path d="M4 6h1v4"/&gt;&lt;path d="M4 10h2"/&gt;&lt;path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/&gt;'),
+  unorderedList: svg('&lt;line x1="8" y1="6" x2="21" y2="6"/&gt;&lt;line x1="8" y1="12" x2="21" y2="12"/&gt;&lt;line x1="8" y1="18" x2="21" y2="18"/&gt;&lt;circle cx="4" cy="6" r="1"/&gt;&lt;circle cx="4" cy="12" r="1"/&gt;&lt;circle cx="4" cy="18" r="1"/&gt;'),
+  indent: svg('&lt;polyline points="3 8 7 12 3 16"/&gt;&lt;line x1="21" y1="12" x2="11" y2="12"/&gt;&lt;line x1="21" y1="6" x2="11" y2="6"/&gt;&lt;line x1="21" y1="18" x2="11" y2="18"/&gt;'),
+  outdent: svg('&lt;polyline points="7 8 3 12 7 16"/&gt;&lt;line x1="21" y1="12" x2="11" y2="12"/&gt;&lt;line x1="21" y1="6" x2="11" y2="6"/&gt;&lt;line x1="21" y1="18" x2="11" y2="18"/&gt;'),
+  link: svg('&lt;path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/&gt;&lt;path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/&gt;'),
+  image: svg('&lt;rect x="3" y="3" width="18" height="18" rx="2" ry="2"/&gt;&lt;circle cx="8.5" cy="8.5" r="1.5"/&gt;&lt;polyline points="21 15 16 10 5 21"/&gt;'),
+  video: svg('&lt;polygon points="23 7 16 12 23 17 23 7"/&gt;&lt;rect x="1" y="5" width="15" height="14" rx="2" ry="2"/&gt;'),
+  table: svg('&lt;rect x="3" y="3" width="18" height="18" rx="2" ry="2"/&gt;&lt;line x1="3" y1="9" x2="21" y2="9"/&gt;&lt;line x1="3" y1="15" x2="21" y2="15"/&gt;&lt;line x1="9" y1="3" x2="9" y2="21"/&gt;&lt;line x1="15" y1="3" x2="15" y2="21"/&gt;'),
+  horizontalRule: svg('&lt;line x1="2" y1="12" x2="22" y2="12"/&gt;'),
+  quote: svg('&lt;path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V21z"/&gt;&lt;path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3z"/&gt;'),
+  code: svg('&lt;polyline points="16 18 22 12 16 6"/&gt;&lt;polyline points="8 6 2 12 8 18"/&gt;'),
+  removeFormat: svg('&lt;path d="M4 7h7l-7 13"/&gt;&lt;path d="M20 7h-7"/&gt;&lt;line x1="19" y1="3" x2="5" y2="21"/&gt;'),
+  foreColor: svg('&lt;path d="M12 3L4 21h2l2.4-6h7.2L18 21h2L12 3z"/&gt;&lt;line x1="6" y1="22" x2="18" y2="22" stroke-width="3"/&gt;'),
+  backColor: svg('&lt;rect x="3" y="3" width="18" height="18" rx="2"/&gt;&lt;path d="M12 7L8 17h2l.8-2h2.4l.8 2h2L12 7z"/&gt;'),
+  subscript: svg('&lt;path d="M4 5l8 10"/&gt;&lt;path d="M12 5L4 15"/&gt;&lt;path d="M20 19h-4c0-1.5 4-2 4-4 0-1.11-.89-2-2-2-1 0-1.5.5-2 1"/&gt;'),
+  superscript: svg('&lt;path d="M4 19l8-10"/&gt;&lt;path d="M12 19L4 9"/&gt;&lt;path d="M20 9h-4c0-1.5 4-2 4-4 0-1.11-.89-2-2-2-1 0-1.5.5-2 1"/&gt;'),
+  undo: svg('&lt;polyline points="1 4 1 10 7 10"/&gt;&lt;path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/&gt;'),
+  redo: svg('&lt;polyline points="23 4 23 10 17 10"/&gt;&lt;path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/&gt;'),
+  source: svg('&lt;polyline points="16 18 22 12 16 6"/&gt;&lt;polyline points="8 6 2 12 8 18"/&gt;'),
+  preview: svg('&lt;path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/&gt;&lt;circle cx="12" cy="12" r="3"/&gt;'),
+  fullscreen: svg('&lt;polyline points="15 3 21 3 21 9"/&gt;&lt;polyline points="9 21 3 21 3 15"/&gt;&lt;line x1="21" y1="3" x2="14" y2="10"/&gt;&lt;line x1="3" y1="21" x2="10" y2="14"/&gt;'),
+  print: svg('&lt;polyline points="6 9 6 2 18 2 18 9"/&gt;&lt;path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/&gt;&lt;rect x="6" y="14" width="12" height="8"/&gt;'),
+  fontSize: svg('&lt;text x="4" y="18" font-size="16" fill="currentColor" stroke="none"&gt;A&lt;/text&gt;&lt;text x="14" y="18" font-size="10" fill="currentColor" stroke="none"&gt;A&lt;/text&gt;'),
+  fontFamily: svg('&lt;text x="3" y="17" font-size="14" fill="currentColor" stroke="none"&gt;Aa&lt;/text&gt;'),
+};</pre></td></tr></table></pre>
+
+                <div class='push'></div><!-- for sticky footer -->
+            </div><!-- /wrapper -->
+            <div class='footer quiet pad2 space-top1 center small'>
+                Code coverage generated by
+                <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
+                at 2026-02-20T21:11:14.527Z
+            </div>
+        <script src="../../prettify.js"></script>
+        <script>
+            window.onload = function () {
+                prettyPrint();
+            };
+        </script>
+        <script src="../../sorter.js"></script>
+        <script src="../../block-navigation.js"></script>
+    </body>
+</html>
+    
